@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class Graph {
     private Node[] variables;
-    ArrayList<DomainLimit> scheduleDomainLimits;
-    ArrayList<DomainLimit> roomDomainLimits;
+    private ArrayList<DomainLimit> scheduleDomainLimits;
+    private ArrayList<DomainLimit> roomDomainLimits;
 
     public Graph(String filepath) {
         BufferedReader br = null;
@@ -121,6 +121,7 @@ public class Graph {
         return count;
     }
 
+<<<<<<< HEAD
     //Strategi masih bisa diubah
     //Ini yang dimutasi satu aja, random dari domainList rangga
     public void mutation() {
@@ -143,5 +144,23 @@ public class Graph {
 
         //mutate
         variables[randInd1].setCurrDomain(randDomain);
+=======
+    public Node[] getVariables() {
+        return variables;
+    }
+
+    public ArrayList<DomainLimit> getScheduleDomainLimits() {
+        return scheduleDomainLimits;
+    }
+
+    public ArrayList<DomainLimit> getRoomDomainLimits() {
+        return roomDomainLimits;
+    }
+
+    public int getFitness() {
+        int n = variables.length;
+        return (n * (n - 1) / 2) - getConflicts();
+
+>>>>>>> origin/master
     }
 }
