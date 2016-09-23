@@ -94,6 +94,13 @@ public class Graph {
         }
     }
 
+    public void printCurrDomain() {
+        for (Node node : variables) {
+            node.printCurrDomain();
+            System.out.println();
+        }
+    }
+
     public void randomInitialize() {
         for (Node var : variables) {
             Random gen = new Random();
@@ -112,5 +119,29 @@ public class Graph {
             }
         }
         return count;
+    }
+
+    //Strategi masih bisa diubah
+    //Ini yang dimutasi satu aja, random dari domainList rangga
+    public void mutation() {
+        //Jumlah variabel
+        int jumlahVar = variables.length;
+
+        //Random dari jumlah variabel, pilih variabel mana yang mau dipilih
+        Random gen1 = new Random();
+        int randInd1 = gen1.nextInt(jumlahVar);   
+
+        //Pilih variable mana yang mau dijadiin pengganti
+        //while not the same
+        Domain randDomain = new Domain(0,0,0,"test");
+        do {
+            Random gen2 = new Random();
+            int randInd2 = gen2.nextInt(variables[randInd1].getDomainList().size());
+            //Pilih domain random dari variabel tersebut
+            randDomain = variables[randInd1].getDomainList().get(randInd2);
+        } while(randDomain==variables[randInd1].getCurrDomain());
+
+        //mutate
+        variables[randInd1].setCurrDomain(randDomain);
     }
 }

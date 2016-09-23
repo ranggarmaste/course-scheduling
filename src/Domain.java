@@ -6,6 +6,7 @@
 public class Domain {
     private int day;
     private int startTime;
+    //Kenapa dura
     private int duration;
     private String room;
 
@@ -21,6 +22,10 @@ public class Domain {
         startTime = d.startTime;
         duration = d.duration;
         room = d.room;
+    }
+
+    public static boolean isSame(Domain d1, Domain d2) {
+        return (d1.day==d2.day && d1.startTime==d2.startTime && d1.duration==d2.duration && d1.room==d2.room);
     }
 
     public int getDay() {

@@ -82,4 +82,12 @@ public class Node {
             domain.print();
         }
     }
+
+    public void printCurrDomain() {
+        if (currDomain != null) {
+            currDomain.print();
+        } else {
+            System.out.println("Not set yet.");
+        }
+    }
 }
