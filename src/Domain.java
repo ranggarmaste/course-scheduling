@@ -52,6 +52,6 @@ public class Domain {
     }
 
     public void print() {
-        System.out.println(day + ", " + startTime + ", " + duration + ", " + room);
+        System.out.println("Hari : " + day + ", jam mulai : " + startTime + ", durasi : " + duration + ", ruangan : " + room);
     }
 }

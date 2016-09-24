@@ -79,10 +79,12 @@ public class Node {
         } else {
             System.out.println("Not set yet.");
         }
+        /*
         System.out.println("**List Of Domains**");
         for (Domain domain : domainList) {
             domain.print();
         }
+        */
     }
 
     public void printCurrDomain() {

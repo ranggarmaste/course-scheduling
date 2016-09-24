@@ -139,7 +139,8 @@ public class Graph {
             int randInd2 = gen2.nextInt(variables[randInd1].getDomainList().size());
             //Pilih domain random dari variabel tersebut
             randDomain = variables[randInd1].getDomainList().get(randInd2);
-        } while(randDomain==variables[randInd1].getCurrDomain());
+        } while(Domain.isSame(randDomain,variables[randInd1].getCurrDomain()));
+        //while(randDomain==variables[randInd1].getCurrDomain());
 
         //mutate
         variables[randInd1].setCurrDomain(randDomain);

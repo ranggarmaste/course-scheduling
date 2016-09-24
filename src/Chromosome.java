@@ -56,6 +56,10 @@ public class Chromosome {
 		graph.mutate();
 	}
 
+	public void print() {
+		graph.print();
+	}
+
 	 public int getMaxFitness() {
         return graph.getMaxFitness();
     }

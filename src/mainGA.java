@@ -18,7 +18,8 @@ public class mainGA {
         generationCount++;
         System.out.println("Generation: " + generationCount);
         System.out.println("Fittest Genes:");
-        System.out.println(dna.getFittestChromosome().getFitness());
+        //System.out.println(dna.getFittestChromosome().getFitness());
+        dna.getFittestChromosome().print();
         if (dna.getFittestChromosome().getFitness()==28) {
         	System.out.println("Solution found!");
         }
