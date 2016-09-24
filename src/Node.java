@@ -38,9 +38,11 @@ public class Node {
                             getCurrDomain().getFinishTime() : o.getCurrDomain().getFinishTime();
                     return earlierFinish - laterStart;
                     */
+                    /*
                     System.out.println(getCourseName() + " X " + o.getCourseName());
                     getCurrDomain().print();
                     o.getCurrDomain().print();
+                    */
                     return 1;
                 } else {
                     return 0;

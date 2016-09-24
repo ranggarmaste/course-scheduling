@@ -7,7 +7,7 @@ public class mainGA {
 
         GeneticAlgorithm ga = new GeneticAlgorithm(true, false);
 
-        while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness()) {
+        while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness() && generationCount<=100) {
             generationCount++;
             System.out.println("Generation: " + generationCount + " Fittest: " + dna.getFittestChromosome().getFitness());
             dna = ga.evolve(dna);

@@ -8,14 +8,16 @@ public class Chromosome {
 	private int fitness = 0;
 
 	public Chromosome() {
-
+		//System.out.println("cctor 1");
 	}
 
 	public Chromosome(Graph graph) {
-		this.graph = new Graph(graph);
+		//System.out.println("cctor 2");
+		this.graph = graph;
 	}
 
 	public Chromosome(Chromosome cr) {
+		//System.out.println("cctor 3");
 		this.graph = cr.graph;
 	}
 

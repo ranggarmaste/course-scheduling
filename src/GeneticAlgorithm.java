@@ -53,12 +53,12 @@ public class GeneticAlgorithm {
 
 		} else {
 			for (int i=mulaiIterasi; i<dna.size(); i++) {
-				/*
 				Chromosome parent1 = parentSelection(dna);
 				Chromosome parent2 = parentSelection(dna);
-				Chromosome newChrome = crossover(parent1, parent2);
-				dna.saveChromosome(i, newChrome);
-				*/
+				//Chromosome newChrome = new Chromosome();
+				//newChrome.setGraph(crossover(parent1, parent2).getGraph());
+				Chromosome newChrome = crossover(dna, parent1, parent2);
+				newDNA.saveChromosome(i, newChrome);
 			}
 		}
 
@@ -70,12 +70,14 @@ public class GeneticAlgorithm {
 		return newDNA;
 	}
 
-	private static Chromosome crossover(Chromosome parent1, Chromosome parent2) {
-		Chromosome newChrome = new Chromosome();
+	private static Chromosome crossover(DNA dna, Chromosome parent1, Chromosome parent2) {
+		//dummy
+		Chromosome newChrome = dna.getChromosome(0);
 
 		//Loop ke tiap variabel
 		for (int i=0; i<parent1.size(); i++) {
-			if (Math.random()<=forCrossover) {
+			double rand = Math.random();
+			if (rand<=forCrossover) {
 				newChrome.setGene(i, parent1.getGene(i));
 			} else {
 				newChrome.setGene(i, parent2.getGene(i));
@@ -85,7 +87,7 @@ public class GeneticAlgorithm {
 		return newChrome;
 	}
 
-	private static Chromosome selection(DNA dna) {
+	private static Chromosome parentSelection(DNA dna) {
 		//Bikin DNA kosong
 		DNA selection = new DNA(forSelection, false);
 
