@@ -25,6 +25,8 @@ public class Main {
 
         DNA testDNA = new DNA(chromosomeArray);
 
+        GeneticAlgorithm ga = new GeneticAlgorithm(true, true);
+
         //Chromosome test = new Chromosome(graph);
         //System.out.println("Conflicts: " + test.getGraph().getConflicts());
     }

@@ -123,7 +123,7 @@ public class Graph {
 
     //Strategi masih bisa diubah
     //Ini yang dimutasi satu aja, random dari domainList rangga
-    public void mutation() {
+    public void mutate() {
         //Jumlah variabel
         int jumlahVar = variables.length;
 
@@ -133,7 +133,7 @@ public class Graph {
 
         //Pilih variable mana yang mau dijadiin pengganti
         //while not the same
-        Domain randDomain = new Domain(0,0,0,"test");
+        Domain randDomain = new Domain(0,0,0,"inisialisasi");
         do {
             Random gen2 = new Random();
             int randInd2 = gen2.nextInt(variables[randInd1].getDomainList().size());
@@ -143,6 +143,14 @@ public class Graph {
 
         //mutate
         variables[randInd1].setCurrDomain(randDomain);
+    }
+
+    public void setGene(int idx, Node nd) {
+        variables[idx].setCurrDomain(nd.getCurrDomain());
+    }
+
+    public Node getGene(int idx) {
+        return variables[idx];
     }
 
     public Node[] getVariables() {
@@ -160,5 +168,10 @@ public class Graph {
     public int getFitness() {
         int n = variables.length;
         return (n * (n - 1) / 2) - getConflicts();
+    }
+
+    public int getMaxFitness() {
+        int n = variables.length;
+        return (n * (n - 1) / 2);
     }
 }
