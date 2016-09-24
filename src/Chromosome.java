@@ -42,10 +42,13 @@ public class Chromosome {
 	}
 
 	public int getFitness() {
+		/*
 		if (fitness==0) {
 			fitness = graph.getFitness();
 		}
 		return fitness;
+		*/
+		return graph.getFitness();
 	}
 
 	//Ini yang dimutasi satu aja
