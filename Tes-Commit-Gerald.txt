@@ -1,1 +1,23 @@
 Buat ngetest udh bisa push belom
+
+Tambahin kelas DNA/Objek untuk nampung keseluruhan solusi random awal, isinya :
+	Attribute :
+	-	Array of node
+
+	Static Method :
+	-	Crossover
+
+	Method :
+	-	Mutation
+
+Tambahin kelas populasi yang berisi list of objek 
+	Attribute :
+	-	Array of DNA
+
+	Method :
+	-	Parent selection
+	-	Crossover with probability
+	-	Mutation with probability
+	-	Fitness calculation
+	-	Survivor selection
+	
