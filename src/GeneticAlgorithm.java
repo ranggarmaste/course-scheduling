@@ -64,7 +64,9 @@ public class GeneticAlgorithm {
 
 		//Mutasi 
 		for (int i=mulaiIterasi; i<dna.size(); i++) {
-			newDNA.getChromosome(i).mutate();
+			if (Math.random() <= mutationProb) {
+				newDNA.getChromosome(i).mutate();
+			}
 		}
 
 		return newDNA;
