@@ -66,7 +66,6 @@ public class DNA {
 		//Chromosome fittest = new Chromosome();
 		//fittest.setGraph(chromosomeArray[ret].getGraph());
 		int fittest = chromosomeArray[ret].getFitness();
-		//System.out.println("Max : " + fittest);
 		//System.out.println("Length : " + chromosomeArray.length);
 		for (int i=1; i<chromosomeArray.length; i++) {
 			if (chromosomeArray[i].getFitness()>fittest) {
@@ -75,7 +74,6 @@ public class DNA {
 			}
 			//fittest.setGraph(chromosomeArray[ret].getGraph());
 		}
-
 		return ret;
 	}
 
@@ -98,19 +96,23 @@ public class DNA {
 		chromosomeArray[idx].setGraph(cr.getGraph());
 	}
 
-	public int getRandomInteger() {
+	public int getRandomInteger(boolean keepBest) {
 		Random bilBul = new Random();
 		int ret; 
 
-		do {
+		if (keepBest) {
+			do {
 			ret = bilBul.nextInt(size());
-		} while (ret==0);
+			} while (ret==0);	
+		} else {
+			ret = bilBul.nextInt(size());
+		}
 
 		return ret;
 	}
 
-	public Chromosome getRandomChromosome() {
-		int ret = getRandomInteger();
+	public Chromosome getRandomChromosome(boolean keepBest) {
+		int ret = getRandomInteger(keepBest);
 
 		return chromosomeArray[ret];
 	}
