@@ -8,13 +8,21 @@ public class DNA {
 		this.chromosomeArray = chromosomeArray;
 	}
 
-	public DNA(int jumlahKromosom, boolean isInitialize) {
-		graph = new Graph("Testcase.txt");
+	public DNA(int jumlahKromosom, boolean isInitialize, String inputFile) {
+		graph = new Graph(inputFile);
 		chromosomeArray = new Chromosome[jumlahKromosom];
 		if (isInitialize) {
 			//Buat solusi random untuk tiap kromosom
 			for (int i=0; i<jumlahKromosom; i++) {
 				Chromosome cr = new Chromosome(graph);
+				cr.getGraph().randomInitialize();
+				chromosomeArray[i] = cr;
+			}
+		} else {
+			//Isi graph dengan testcase.txt, ini dummy aja
+			Graph dummy = new Graph("Testcase.txt");
+			for (int i=0; i<jumlahKromosom; i++) {
+				Chromosome cr = new Chromosome(dummy);
 				cr.getGraph().randomInitialize();
 				chromosomeArray[i] = cr;
 			}
@@ -32,6 +40,14 @@ public class DNA {
 				cr.getGraph().randomInitialize();
 				chromosomeArray[i] = cr;
 			}
+		} else {
+			//Isi graph dengan testcase.txt, ini dummy aja
+			Graph dummy = new Graph("Testcase.txt");
+			for (int i=0; i<jumlahKromosom; i++) {
+				Chromosome cr = new Chromosome(dummy);
+				cr.getGraph().randomInitialize();
+				chromosomeArray[i] = cr;
+			}
 		}
 	}
 
@@ -40,32 +56,31 @@ public class DNA {
 		return chromosomeArray[idx];
 	}
 
+	//Getter
+	public Graph getGraph() {
+		return graph;
+	}
+
 	public int getFittestNumber() {
 		int ret = 0;
-		Chromosome fittest = chromosomeArray[ret];
-
+		//Chromosome fittest = new Chromosome();
+		//fittest.setGraph(chromosomeArray[ret].getGraph());
+		int fittest = chromosomeArray[ret].getFitness();
+		//System.out.println("Max : " + fittest);
+		//System.out.println("Length : " + chromosomeArray.length);
 		for (int i=1; i<chromosomeArray.length; i++) {
-			if (chromosomeArray[i].getFitness()>fittest.getFitness()) {
+			if (chromosomeArray[i].getFitness()>fittest) {
 				ret = i;
+				fittest = chromosomeArray[ret].getFitness();
 			}
-			fittest = chromosomeArray[ret];
+			//fittest.setGraph(chromosomeArray[ret].getGraph());
 		}
 
 		return ret;
 	}
 
 	public Chromosome getFittestChromosome() {
-		int ret = 0;
-		Chromosome fittest = chromosomeArray[ret];
-
-		for (int i=1; i<chromosomeArray.length; i++) {
-			if (chromosomeArray[i].getFitness()>fittest.getFitness()) {
-				ret = i;
-			}
-			fittest = chromosomeArray[ret];
-		}
-
-		return fittest;
+		return chromosomeArray[getFittestNumber()];
 	}
 
 	public int size() {
@@ -73,13 +88,14 @@ public class DNA {
 	}
 
 	public void switchChromosome(int i, int j) {
-		Chromosome temp = new Chromosome(chromosomeArray[i]);
-		chromosomeArray[i] = chromosomeArray[j];
-		chromosomeArray[j] = temp;
+		Chromosome temp = new Chromosome();
+		temp.setGraph(chromosomeArray[i].getGraph());
+		chromosomeArray[i].setGraph(chromosomeArray[j].getGraph());
+		chromosomeArray[j].setGraph(temp.getGraph());
 	}
 
 	public void saveChromosome(int idx, Chromosome cr) {
-		chromosomeArray[idx] = cr;
+		chromosomeArray[idx].setGraph(cr.getGraph());
 	}
 
 	public int getRandomInteger() {

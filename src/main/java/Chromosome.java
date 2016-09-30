@@ -8,7 +8,7 @@ public class Chromosome {
 	private int fitness = 0;
 
 	public Chromosome() {
-		//System.out.println("cctor 1");
+		//System.out.println("cctor 1");		
 	}
 
 	public Chromosome(Graph graph) {
@@ -26,7 +26,7 @@ public class Chromosome {
 	}
 
 	public void setGraph(Graph graph) {
-		this.graph = graph;
+		this.graph = new Graph(graph);
 	}
 
 	public void setGene(int idx, Node nd) {

@@ -21,19 +21,22 @@ public class GeneticAlgorithm {
 
 	public static DNA evolve(DNA dna) {
 		if (isSteadyState) {
+			System.out.println("Evolving incrementally");
 			return evolveIncremental(dna);
 		} else {
+			System.out.println("Evolving generationally");
 			return evolveGenerational(dna);
 		}
 	}
 
 	public static DNA evolveGenerational(DNA dna) {
 		//Bikin DNA kosong
-		DNA newDNA = new DNA(dna.size(), false);
+		DNA newDNA = new DNA(dna.getGraph(), dna.size(), false);
 
 		if(keepBestChromosome) {
 			//Simpen best chromosome dari populasi sebelumnya
 			newDNA.saveChromosome(0, dna.getFittestChromosome());
+			System.out.println("Saving best Chromosome");
 			//Tuker. Fittest chromosome jadi di paling depan
 			/*
 			int fittest = dna.getFittestChromosome();
@@ -57,11 +60,15 @@ public class GeneticAlgorithm {
 		} else {
 			if (crossType.equals("uniform")) {
 				for (int i=mulaiIterasi; i<dna.size(); i++) {
-					Chromosome parent1 = parentSelection(dna);
-					Chromosome parent2 = parentSelection(dna);
-					//Chromosome newChrome = new Chromosome();
-					//newChrome.setGraph(crossover(parent1, parent2).getGraph());
-					Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
+					//Chromosome parent1 = parentSelection(dna);
+					//Chromosome parent2 = parentSelection(dna);
+					Chromosome parent1 = new Chromosome();
+					parent1.setGraph(parentSelection(dna).getGraph());
+					Chromosome parent2 = new Chromosome();
+					parent2.setGraph(parentSelection(dna).getGraph());
+					Chromosome newChrome = new Chromosome();
+					newChrome.setGraph(uniformCrossover(dna, parent1, parent2).getGraph());
+					//Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
 					newDNA.saveChromosome(i, newChrome);
 				}
 			}
@@ -81,9 +88,12 @@ public class GeneticAlgorithm {
 		//Bikin DNA kosong
 		if(keepBestChromosome) {
 			//Tuker. Fittest chromosome jadi di paling depan
+
 			int fittest = dna.getFittestNumber();
+			System.out.println("Fittest : " + fittest);
 			if (fittest!=0) {
 				dna.switchChromosome(0, fittest);
+				System.out.println("Saving best Chromosome");
 			}
 		}
 
@@ -97,8 +107,10 @@ public class GeneticAlgorithm {
 		}
 
 		//crossover
-		Chromosome parent1 = parentSelection(dna);
-		Chromosome parent2 = parentSelection(dna);
+		Chromosome parent1 = new Chromosome();
+		parent1.setGraph(parentSelection(dna).getGraph());
+		Chromosome parent2 = new Chromosome();
+		parent2.setGraph(parentSelection(dna).getGraph());
 		Chromosome[] child = uniformCrossoverArray(dna, parent1, parent2);
 
 		int random1 = dna.getRandomInteger();
@@ -161,7 +173,7 @@ public class GeneticAlgorithm {
 
 	private static Chromosome parentSelection(DNA dna) {
 		//Bikin DNA kosong
-		DNA selection = new DNA(forSelection, false);
+		DNA selection = new DNA(dna.getGraph(), forSelection, false);
 
 		//Buat tiap kromosom, pilih acak
 		for (int i=0; i<selection.size(); i++) {
