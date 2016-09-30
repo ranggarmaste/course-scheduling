@@ -20,7 +20,7 @@ public class Node {
         courseName = n.courseName;
         currDomain = new Domain(n.currDomain);
         domainList = new ArrayList<>();
-        for (Domain d : domainList) {
+        for (Domain d : n.domainList) {
             domainList.add(new Domain(d));
         }
     }
@@ -37,11 +37,6 @@ public class Node {
                     int earlierFinish = getCurrDomain().getFinishTime() < o.getCurrDomain().getFinishTime() ?
                             getCurrDomain().getFinishTime() : o.getCurrDomain().getFinishTime();
                     return earlierFinish - laterStart;
-                    */
-                    /*
-                    System.out.println(getCourseName() + " X " + o.getCourseName());
-                    getCurrDomain().print();
-                    o.getCurrDomain().print();
                     */
                     return 1;
                 } else {

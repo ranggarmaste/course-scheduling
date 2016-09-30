@@ -111,7 +111,6 @@ public class Graph {
     }
 
     public int getConflicts() {
-        //System.out.println("**Conflicts**");
         int count = 0;
         for (int i = 0; i < variables.length - 1; i++) {
             for (int j = i + 1; j < variables.length; j++) {

@@ -19,6 +19,20 @@ public class DNA {
 		}
 	}
 
+	// New constructor, just to make things consistent
+	public DNA(Graph initGraph, int jumlahKromosom, boolean isInitialize) {
+		graph = new Graph(initGraph);
+		chromosomeArray = new Chromosome[jumlahKromosom];
+		if (isInitialize) {
+			//Buat solusi random untuk tiap kromosom
+			for (int i=0; i<jumlahKromosom; i++) {
+				Chromosome cr = new Chromosome(graph);
+				cr.getGraph().randomInitialize();
+				chromosomeArray[i] = cr;
+			}
+		}
+	}
+
 	//Getter
 	public Chromosome getChromosome(int idx) {
 		return chromosomeArray[idx];

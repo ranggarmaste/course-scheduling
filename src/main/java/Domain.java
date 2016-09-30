@@ -18,9 +18,9 @@ public class Domain {
     }
 
     public Domain(Domain d) {
-        System.out.println("sampe sini");
-        System.out.println(d);
-        System.out.println("ngk sampe sini");
+        //System.out.println("sampe sini");
+        //System.out.println(d);
+        //System.out.println("ngk sampe sini");
         day = d.day;
         startTime = d.startTime;
         duration = d.duration;
