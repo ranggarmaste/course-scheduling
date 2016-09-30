@@ -10,15 +10,18 @@ public class GeneticAlgorithm {
 	private static boolean keepBestChromosome;
 	//Pake GA yang steady state atau generational?
 	private static boolean isSteadyState;
+	//Cara crossover
+	private static String crossType;
 
-	public GeneticAlgorithm(boolean best, boolean steady) {
+	public GeneticAlgorithm(boolean best, boolean steady, String ct) {
 		keepBestChromosome = best;
 		isSteadyState = steady;
+		crossType = ct;
 	}
 
 	public static DNA evolve(DNA dna) {
 		if (isSteadyState) {
-			return evolveGenerational(dna);
+			return evolveIncremental(dna);
 		} else {
 			return evolveGenerational(dna);
 		}
@@ -52,13 +55,15 @@ public class GeneticAlgorithm {
 		if(isSteadyState) {
 
 		} else {
-			for (int i=mulaiIterasi; i<dna.size(); i++) {
-				Chromosome parent1 = parentSelection(dna);
-				Chromosome parent2 = parentSelection(dna);
-				//Chromosome newChrome = new Chromosome();
-				//newChrome.setGraph(crossover(parent1, parent2).getGraph());
-				Chromosome newChrome = crossover(dna, parent1, parent2);
-				newDNA.saveChromosome(i, newChrome);
+			if (crossType.equals("uniform")) {
+				for (int i=mulaiIterasi; i<dna.size(); i++) {
+					Chromosome parent1 = parentSelection(dna);
+					Chromosome parent2 = parentSelection(dna);
+					//Chromosome newChrome = new Chromosome();
+					//newChrome.setGraph(crossover(parent1, parent2).getGraph());
+					Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
+					newDNA.saveChromosome(i, newChrome);
+				}
 			}
 		}
 
@@ -72,7 +77,51 @@ public class GeneticAlgorithm {
 		return newDNA;
 	}
 
-	private static Chromosome crossover(DNA dna, Chromosome parent1, Chromosome parent2) {
+	public static DNA evolveIncremental(DNA dna) {
+		//Bikin DNA kosong
+		if(keepBestChromosome) {
+			//Tuker. Fittest chromosome jadi di paling depan
+			int fittest = dna.getFittestNumber();
+			if (fittest!=0) {
+				dna.switchChromosome(0, fittest);
+			}
+		}
+
+		int mulaiIterasi;
+		if (keepBestChromosome) {
+			//Kalo best kromosom di keep, mulai dari 1
+			mulaiIterasi = 1;
+		} else {
+			//Kalo ngk, dari awal
+			mulaiIterasi = 0;
+		}
+
+		//crossover
+		Chromosome parent1 = parentSelection(dna);
+		Chromosome parent2 = parentSelection(dna);
+		Chromosome[] child = uniformCrossoverArray(dna, parent1, parent2);
+
+		int random1 = dna.getRandomInteger();
+		int random2;
+		do {
+			random2 = dna.getRandomInteger();
+		} while (random1==random2);
+
+		dna.saveChromosome(random1, child[0]);
+		dna.saveChromosome(random2, child[1]);
+
+		//mutation
+		for (int i=mulaiIterasi; i<dna.size(); i++) {
+			if (Math.random() <= mutationProb) {
+				dna.getChromosome(i).mutate();
+			}
+		}
+
+		//return
+		return dna;
+	}
+
+	private static Chromosome uniformCrossover(DNA dna, Chromosome parent1, Chromosome parent2) {
 		//dummy
 		Chromosome newChrome = dna.getChromosome(0);
 
@@ -83,6 +132,27 @@ public class GeneticAlgorithm {
 				newChrome.setGene(i, parent1.getGene(i));
 			} else {
 				newChrome.setGene(i, parent2.getGene(i));
+			}
+		}
+
+		return newChrome;
+	}
+
+	private static Chromosome[] uniformCrossoverArray(DNA dna, Chromosome parent1, Chromosome parent2) {
+		//Dummy
+		Chromosome[] newChrome = new Chromosome[2];
+		newChrome[0] = dna.getChromosome(0);;
+		newChrome[1] = dna.getChromosome(0);;
+
+		//Loop ke tiap variabel
+		for (int i=0; i<parent1.size(); i++) {
+			double rand = Math.random();
+			if (rand<=forCrossover) {
+				newChrome[0].setGene(i, parent1.getGene(i));
+				newChrome[1].setGene(i, parent2.getGene(i));
+			} else {
+				newChrome[0].setGene(i, parent2.getGene(i));
+				newChrome[1].setGene(i, parent1.getGene(i));
 			}
 		}
 

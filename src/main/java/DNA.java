@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class DNA {
 	private Chromosome[] chromosomeArray;
 	private Graph graph;
@@ -78,5 +80,22 @@ public class DNA {
 
 	public void saveChromosome(int idx, Chromosome cr) {
 		chromosomeArray[idx] = cr;
+	}
+
+	public int getRandomInteger() {
+		Random bilBul = new Random();
+		int ret; 
+
+		do {
+			ret = bilBul.nextInt(size());
+		} while (ret==0);
+
+		return ret;
+	}
+
+	public Chromosome getRandomChromosome() {
+		int ret = getRandomInteger();
+
+		return chromosomeArray[ret];
 	}
 }

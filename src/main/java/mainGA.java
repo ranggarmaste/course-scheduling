@@ -27,7 +27,7 @@ public class mainGA {
             bool2 = false;
         }
         //Umumnya, run java mainGA true false
-        GeneticAlgorithm ga = new GeneticAlgorithm(bool1, bool2);
+        GeneticAlgorithm ga = new GeneticAlgorithm(bool1, bool2, args[2]);
 
         System.out.println("Max fitness : " + dna.getFittestChromosome().getMaxFitness());
 
