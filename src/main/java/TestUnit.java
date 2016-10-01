@@ -11,7 +11,7 @@ public class TestUnit {
 		dna.getChromosome(0).print();
 	}
 
-	//Test crossover
+	//Crossover works
 	public static void testCrossover(String inputFile) {
 		//BUG : KENAPA SEMUA RANDOM INITIALIZATION SAMA UNTUK TIAP CHROMOSOME
 		DNA dna = new DNA(2, true, inputFile);
