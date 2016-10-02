@@ -72,35 +72,32 @@ public class GeneticAlgorithm {
 			mulaiIterasi = 0;
 		}
 
-		if(isSteadyState) {
+		//crossover
+		if (crossType.equals("uniform")) {
+			for (int i=mulaiIterasi; i<dna.size(); i++) {
+				if (Math.random()<=crossProb) {
+					//Chromosome parent1 = parentSelection(dna);
+					//Chromosome parent2 = parentSelection(dna);
+					Chromosome parent1 = new Chromosome();
+					Chromosome parent2 = new Chromosome();
 
-		} else {
-			if (crossType.equals("uniform")) {
-				for (int i=mulaiIterasi; i<dna.size(); i++) {
-					if (Math.random()<=crossProb) {
-						//Chromosome parent1 = parentSelection(dna);
-						//Chromosome parent2 = parentSelection(dna);
-						Chromosome parent1 = new Chromosome();
-						Chromosome parent2 = new Chromosome();
-
-						if (parentType.equals("sampling")) {
-							Chromosome[] parents = samplingParentSelection(dna);
-							parent1.setGraph(parents[0].getGraph());
-							parent2.setGraph(parents[1].getGraph());
-						} else {
-							parent1.setGraph(parentSelection(dna).getGraph());
-							parent2.setGraph(parentSelection(dna).getGraph());
-						}
-
-						Chromosome newChrome = new Chromosome();
-						newChrome.setGraph(uniformCrossover(dna, parent1, parent2).getGraph());
-						//Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
-						newDNA.saveChromosome(i, newChrome);
+					if (parentType.equals("sampling")) {
+						Chromosome[] parents = samplingParentSelection(dna);
+						parent1.setGraph(parents[0].getGraph());
+						parent2.setGraph(parents[1].getGraph());
+					} else {
+						parent1.setGraph(parentSelection(dna).getGraph());
+						parent2.setGraph(parentSelection(dna).getGraph());
 					}
+
+					Chromosome newChrome = new Chromosome();
+					newChrome.setGraph(uniformCrossover(dna, parent1, parent2).getGraph());
+					//Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
+					newDNA.saveChromosome(i, newChrome);
 				}
 			}
 		}
-
+		
 		//Mutasi 
 		for (int i=mulaiIterasi; i<dna.size(); i++) {
 			if (Math.random() <= mutationProb) {
