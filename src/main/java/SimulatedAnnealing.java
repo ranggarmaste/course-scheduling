@@ -47,11 +47,7 @@ class SimulatedAnnealing {
             int conflictAfter = graph.getConflicts();
             if (conflictTemp < conflictAfter) {
             	double valueTemp = (Math.exp((conflictTemp - conflictAfter)/ temperature))*100;
-            	int valueRand = (int) Math.round(valueTemp);
-            	valueRand = 100/valueRand;
-            	Random rand = new Random();
-            	boolean val = rand.nextInt(valueRand)==0;
-            	if (val == false) {
+            	if (valueTemp < 0.5) {
             		graph.getVariables()[randNode].setCurrDomain(DomainTemp);
             	}
             }

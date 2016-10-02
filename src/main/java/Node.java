@@ -30,15 +30,28 @@ public class Node {
             if (getCurrDomain().getRoom().equals(o.getCurrDomain().getRoom())) {
                 if (getCurrDomain().getFinishTime() > o.getCurrDomain().getStartTime()
                         && o.getCurrDomain().getFinishTime() > getCurrDomain().getStartTime()) {
-                    /*
-                    Yang Rumus si Tio
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public int conflictWithTS(Node o) {
+        if (getCurrDomain().getDay() == o.getCurrDomain().getDay()) {
+            if (getCurrDomain().getRoom().equals(o.getCurrDomain().getRoom())) {
+                if (getCurrDomain().getFinishTime() > o.getCurrDomain().getStartTime()
+                        && o.getCurrDomain().getFinishTime() > getCurrDomain().getStartTime()) {
                     int laterStart = getCurrDomain().getStartTime() > o.getCurrDomain().getStartTime() ?
                             getCurrDomain().getStartTime() : o.getCurrDomain().getStartTime();
                     int earlierFinish = getCurrDomain().getFinishTime() < o.getCurrDomain().getFinishTime() ?
                             getCurrDomain().getFinishTime() : o.getCurrDomain().getFinishTime();
                     return earlierFinish - laterStart;
-                    */
-                    return 1;
                 } else {
                     return 0;
                 }

@@ -43,7 +43,7 @@ public class mainGA {
 
         generationCount++;
         System.out.println("Generation: " + generationCount);
-        if (dna.getFittestChromosome().getFitness()==28) {
+        if (dna.getFittestChromosome().getFitness() == 28) {
             System.out.println("Solution found!");
         } else {
             System.out.println("Max iteration reached");

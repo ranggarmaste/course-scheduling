@@ -120,6 +120,28 @@ public class Graph {
         return count;
     }
 
+    public double getEffectivity() {
+        return 100 - (getConflicts() / (double) variables.length * 100);
+    }
+
+    public int getConflictsTS() {
+        int count = 0;
+        for (int i = 0; i < variables.length - 1; i++) {
+            for (int j = i + 1; j < variables.length; j++) {
+                count += variables[i].conflictWithTS(variables[j]);
+            }
+        }
+        return count;
+    }
+
+    public double getEffectivityTS() {
+        double count = 0.0;
+        for (int i = 0; i < variables.length; i++) {
+            count += variables[i].getCurrDomain().getDuration();
+        }
+        return 100 - (getConflictsTS() / count * 100);
+    }
+
     //Strategi masih bisa diubah
     //Ini yang dimutasi satu aja, random dari domainList rangga
     public void mutate() {

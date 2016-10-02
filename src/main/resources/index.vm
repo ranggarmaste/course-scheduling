@@ -1,114 +1,166 @@
 <html>
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="/jquery-1.12.4.min.js"></script>
+        <script src="/jquery-ui.js"></script>
+        <script src="/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/bootstrap.min.css">
         <link rel="stylesheet" href="/index.css">
     </head>
-    <div class="container">
-        <table class="table">
-            <tr>
-                <th>Jam</th>
-                <th>Senin</th>
-                <th>Selasa</th>
-                <th>Rabu</th>
-                <th>Kamis</th>
-                <th>Jumat</th>
-            </tr>
-            <tr>
-                <td>07.00</td>
-                <td id="tb107"></td>
-                <td id="tb207"></td>
-                <td id="tb307"></td>
-                <td id="tb407"></td>
-                <td id="tb507"></td>
-            </tr>
-            <tr>
-                <td>08.00</td>
-                <td id="tb108"></td>
-                <td id="tb208"></td>
-                <td id="tb308"></td>
-                <td id="tb408"></td>
-                <td id="tb508"></td>
-            </tr>
-            <tr>
-                <td>09.00</td>
-                <td id="tb109"></td>
-                <td id="tb209"></td>
-                <td id="tb309"></td>
-                <td id="tb409"></td>
-                <td id="tb509"></td>
-            </tr>
-            <tr>
-                <td>10.00</td>
-                <td id="tb110"></td>
-                <td id="tb210"></td>
-                <td id="tb310"></td>
-                <td id="tb410"></td>
-                <td id="tb510"></td>
-            </tr>
-            <tr>
-                <td>11.00</td>
-                <td id="tb111"></td>
-                <td id="tb211"></td>
-                <td id="tb311"></td>
-                <td id="tb411"></td>
-                <td id="tb511"></td>
-            </tr>
-            <tr>
-                <td>12.00</td>
-                <td id="tb112"></td>
-                <td id="tb212"></td>
-                <td id="tb312"></td>
-                <td id="tb412"></td>
-                <td id="tb512"></td>
-            </tr>
-            <tr>
-                <td>13.00</td>
-                <td id="tb113"></td>
-                <td id="tb213"></td>
-                <td id="tb313"></td>
-                <td id="tb413"></td>
-                <td id="tb513"></td>
-            </tr>
-            <tr>
-                <td>14.00</td>
-                <td id="tb114"></td>
-                <td id="tb214"></td>
-                <td id="tb314"></td>
-                <td id="tb414"></td>
-                <td id="tb514"></td>
-            </tr>
-            <tr>
-                <td>15.00</td>
-                <td id="tb115"></td>
-                <td id="tb215"></td>
-                <td id="tb315"></td>
-                <td id="tb415"></td>
-                <td id="tb515"></td>
-            </tr>
-            <tr>
-                <td>16.00</td>
-                <td id="tb116"></td>
-                <td id="tb216"></td>
-                <td id="tb316"></td>
-                <td id="tb416"></td>
-                <td id="tb516"></td>
-            </tr>
-            <tr>
-                <td>17.00</td>
-                <td id="tb117"></td>
-                <td id="tb217"></td>
-                <td id="tb317"></td>
-                <td id="tb417"></td>
-                <td id="tb517"></td>
-            </tr>
-        </table>
-    </div>
-    <div class="invisible"></div>
-    <script>
-        var graph = $data;
-        console.log($conflicts);
-    </script>
-    <script src="/index.js"></script>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">SUSHI ORIGAMI</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li id="hc-nav"><a  href="/HC">Hill Climbing</a></li>
+                        <li id="sa-nav" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Simulated Annealing<span class="caret"></span></a>
+                            <form class="dropdown-menu dropdown-form" method="get" action="/SA">
+                                <li>Temperature</li>
+                                <li><input type="text" name="temp" placeholder="10000.0"></li>
+                                <li>Decreament</li>
+                                <li><input type="text" name="decr" placeholder="0.97"></li>
+                                <li><input class="btn btn-primary" type="submit" value="Calculate"></li>
+                            </form>
+                        </li>
+                        <li id="ga-nav" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Genetic Algorithm<span class="caret"></span></a>
+                            <form class="dropdown-menu dropdown-form" method="get" action="/GA">
+                                <li>Chromosome</li>
+                                <li><input type="text" name="chrom" placeholder="50"></li>
+                                <li>Max Iteration</li>
+                                <li><input type="text" name="iteration" placeholder="10"></li>
+                                <li>Best (T/F)</li>
+                                <li><input type="text" name="best" placeholder="T"></li>
+                                <li>Steady (T/F)</li>
+                                <li><input type="text" name="steady" placeholder="F"></li>
+                                <li><input class="btn btn-primary" type="submit" value="Calculate"></li>
+                            </form>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <div class="container">
+            <h2 class="title">$algorithm</h2>
+            <table class="table">
+                <tr>
+                    <th>Jam</th>
+                    <th>Senin</th>
+                    <th>Selasa</th>
+                    <th>Rabu</th>
+                    <th>Kamis</th>
+                    <th>Jumat</th>
+                </tr>
+                <tr>
+                    <td>07.00</td>
+                    <td id="tb107"></td>
+                    <td id="tb207"></td>
+                    <td id="tb307"></td>
+                    <td id="tb407"></td>
+                    <td id="tb507"></td>
+                </tr>
+                <tr>
+                    <td>08.00</td>
+                    <td id="tb108"></td>
+                    <td id="tb208"></td>
+                    <td id="tb308"></td>
+                    <td id="tb408"></td>
+                    <td id="tb508"></td>
+                </tr>
+                <tr>
+                    <td>09.00</td>
+                    <td id="tb109"></td>
+                    <td id="tb209"></td>
+                    <td id="tb309"></td>
+                    <td id="tb409"></td>
+                    <td id="tb509"></td>
+                </tr>
+                <tr>
+                    <td>10.00</td>
+                    <td id="tb110"></td>
+                    <td id="tb210"></td>
+                    <td id="tb310"></td>
+                    <td id="tb410"></td>
+                    <td id="tb510"></td>
+                </tr>
+                <tr>
+                    <td>11.00</td>
+                    <td id="tb111"></td>
+                    <td id="tb211"></td>
+                    <td id="tb311"></td>
+                    <td id="tb411"></td>
+                    <td id="tb511"></td>
+                </tr>
+                <tr>
+                    <td>12.00</td>
+                    <td id="tb112"></td>
+                    <td id="tb212"></td>
+                    <td id="tb312"></td>
+                    <td id="tb412"></td>
+                    <td id="tb512"></td>
+                </tr>
+                <tr>
+                    <td>13.00</td>
+                    <td id="tb113"></td>
+                    <td id="tb213"></td>
+                    <td id="tb313"></td>
+                    <td id="tb413"></td>
+                    <td id="tb513"></td>
+                </tr>
+                <tr>
+                    <td>14.00</td>
+                    <td id="tb114"></td>
+                    <td id="tb214"></td>
+                    <td id="tb314"></td>
+                    <td id="tb414"></td>
+                    <td id="tb514"></td>
+                </tr>
+                <tr>
+                    <td>15.00</td>
+                    <td id="tb115"></td>
+                    <td id="tb215"></td>
+                    <td id="tb315"></td>
+                    <td id="tb415"></td>
+                    <td id="tb515"></td>
+                </tr>
+                <tr>
+                    <td>16.00</td>
+                    <td id="tb116"></td>
+                    <td id="tb216"></td>
+                    <td id="tb316"></td>
+                    <td id="tb416"></td>
+                    <td id="tb516"></td>
+                </tr>
+                <tr>
+                    <td>17.00</td>
+                    <td id="tb117"></td>
+                    <td id="tb217"></td>
+                    <td id="tb317"></td>
+                    <td id="tb417"></td>
+                    <td id="tb517"></td>
+                </tr>
+            </table>
+            <div class="results text-center">
+                <h4>$iteration Iterations</h4>
+                <h4>
+                    COURSE > <span id="conflicts">Conflicts: $conflicts</span> | <span id="eff">Effectivity: $eff%</span>
+                </h4>
+                <h4>
+                    TIME SLOT > <span id="conflictsTS">Conflicts: $conflictsTS</span> | <span id="effTS">Effectivity: $effTS%</span>
+                </h4>
+            </div>
+        </div>
+        <div class="invisible"></div>
+        <script>
+            var graph = $data;
+            var algorithm = "$algorithm";
+        </script>
+        <script src="/index.js"></script>
+    </body>
 </html>
