@@ -42,13 +42,6 @@ public class GeneticAlgorithm {
 			//Simpen best chromosome dari populasi sebelumnya
 			newDNA.saveChromosome(0, dna.getFittestChromosome());
 			System.out.println("Saving best Chromosome");
-			//Tuker. Fittest chromosome jadi di paling depan
-			/*
-			int fittest = dna.getFittestChromosome();
-			if (fittest!=0) {
-				dna.switchChromosome(0, fittest);
-			}
-			*/
 		}
 
 		int mulaiIterasi;
@@ -110,24 +103,26 @@ public class GeneticAlgorithm {
 		}
 
 		//crossover
-		Chromosome parent1 = new Chromosome();
-		parent1.setGraph(parentSelection(dna).getGraph());
-		Chromosome parent2 = new Chromosome();
-		parent2.setGraph(parentSelection(dna).getGraph());
-		Chromosome[] child = uniformCrossoverArray(dna, parent1, parent2);
+		if (crossType.equals("uniform")) {
+			Chromosome parent1 = new Chromosome();
+			parent1.setGraph(parentSelection(dna).getGraph());
+			Chromosome parent2 = new Chromosome();
+			parent2.setGraph(parentSelection(dna).getGraph());
+			Chromosome[] child = uniformCrossoverArray(dna, parent1, parent2);
 
-		int random1 = dna.getRandomInteger(keepBestChromosome);
-		int random2;
-		do {
-			random2 = dna.getRandomInteger(keepBestChromosome);
-		} while (random1==random2);
+			int random1 = dna.getRandomInteger(keepBestChromosome);
+			int random2;
+			do {
+				random2 = dna.getRandomInteger(keepBestChromosome);
+			} while (random1==random2);
 
-		if ((random1 == 0 || random2==0) && (keepBestChromosome)) {
-			System.exit(1);
+			if ((random1 == 0 || random2==0) && (keepBestChromosome)) {
+				System.exit(1);
+			}
+
+			dna.saveChromosome(random1, child[0]);
+			dna.saveChromosome(random2, child[1]);
 		}
-
-		dna.saveChromosome(random1, child[0]);
-		dna.saveChromosome(random2, child[1]);
 
 		//mutation
 		for (int i=mulaiIterasi; i<dna.size(); i++) {
