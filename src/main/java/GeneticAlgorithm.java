@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class GeneticAlgorithm {
 	//Peluang ganti nilai variabel
 	private static final double mutationProb = 0.05;
@@ -12,11 +14,14 @@ public class GeneticAlgorithm {
 	private static boolean isSteadyState;
 	//Cara crossover
 	private static String crossType;
+	//Cara parent selection
+	private static String parentType;
 
-	public GeneticAlgorithm(boolean best, boolean steady, String ct) {
+	public GeneticAlgorithm(boolean best, boolean steady, String ct, String pt) {
 		keepBestChromosome = best;
 		isSteadyState = steady;
 		crossType = ct;
+		parentType = pt;
 	}
 
 	public static DNA evolve(DNA dna) {
@@ -179,17 +184,47 @@ public class GeneticAlgorithm {
 	}
 
 	public static Chromosome parentSelection(DNA dna) {
-		//Bikin DNA kosong
-		DNA selection = new DNA(dna.getGraph(), forSelection, false);
+		if (parentType.equals("tournament")) {
+			//Bikin DNA kosong
+			DNA selection = new DNA(dna.getGraph(), forSelection, false);
 
-		//Buat tiap kromosom, pilih acak
-		for (int i=0; i<selection.size(); i++) {
-			int rand = (int) (Math.random() * dna.size());
-            selection.saveChromosome(i, dna.getChromosome(rand));
+			//Buat tiap kromosom, pilih acak
+			for (int i=0; i<selection.size(); i++) {
+				int rand = (int) (Math.random() * dna.size());
+		        selection.saveChromosome(i, dna.getChromosome(rand));
+			}
+
+			//Pilih yang paling bagus
+			Chromosome fittest = selection.getFittestChromosome();
+			return fittest;
+		} else
+		if (parentType.equals("roulette")) {
+			//Jumlahkan total fitness
+			int totalFitness = 0;
+			for (int i=0; i<dna.size(); i++) {
+				totalFitness+=dna.getChromosome(i).getFitness();
+			}
+
+			Random bilBul = new Random();
+			//Generate random integer dari 0 sampe totalFitness-1
+			int rand = bilBul.nextInt(totalFitness);
+
+			int partSum = 0;
+			for (int i=0; i<dna.size(); i++) {
+				partSum+=dna.getChromosome(i).getFitness();
+				if (partSum>=rand) {
+					return dna.getChromosome(i);
+				}
+			}			
+			return dna.getChromosome(0);
+		} else 
+		if (parentType.equals("rank")) {
+			return dna.getChromosome(0);
+		} else
+		if (parentType.equals("sampling")) {
+			return dna.getChromosome(0);
+		} else {
+			return dna.getChromosome(0);
 		}
-
-		//Pilih yang paling bagus
-		Chromosome fittest = selection.getFittestChromosome();
-		return fittest;
 	}
 }

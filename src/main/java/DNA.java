@@ -46,6 +46,17 @@ public class DNA {
 				chromosomeArray[i].setGraph(cr.getGraph());
 			}
 		}
+		//INI PENTING, jgn diilangin, kalo ngk NGEBUG
+		else {
+			//Isi graph dengan testcase.txt, ini dummy aja
+			Graph dummy = new Graph("Testcase.txt");
+			for (int i=0; i<jumlahKromosom; i++) {
+				Chromosome cr = new Chromosome(dummy);
+				cr.getGraph().randomInitialize();
+				chromosomeArray[i] = new Chromosome();
+				chromosomeArray[i].setGraph(cr.getGraph());
+			}
+		}
 	}
 
 	//Getter

@@ -15,10 +15,12 @@ public class mainGA {
         //nanti mungkin ditambah parameter int buat nentuin mekanisme mutation, sementara ini kemungkinan 
         //kecil satu gen/variabel akan berubah nilainya untuk setiap kromosom
         //Ini juga belum nerapin survirvor selection alias kick chromosome, soalnya gk wajib di buku
-        //args[2] mekanisme crossover
+        //args[2] mekanisme crossover -> uniform
         //args[3] jumlah kromosom
         //args[4] string inputfile
         //args[5] Maks iterasi
+        //args[6] mekanisme parent selection -> roulette, rank, sampling, tournament
+        //args[7] pake seleksi alam atau ngk
         boolean bool1, bool2;
         if (args[0].equals("true")) {
             bool1 = true;
@@ -31,17 +33,16 @@ public class mainGA {
             bool2 = false;
         }
         //Umumnya, run java mainGA true false
-        GeneticAlgorithm ga = new GeneticAlgorithm(bool1, bool2, args[2]);
+        GeneticAlgorithm ga = new GeneticAlgorithm(bool1, bool2, args[2], args[6]);
 
         System.out.println("Max fitness : " + dna.getFittestChromosome().getMaxFitness());
 
-        while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness() && generationCount<=Integer.parseInt(args[5])) {
+        while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness() && generationCount<Integer.parseInt(args[5])) {
             generationCount++;
             System.out.println("Generation: " + generationCount + " Fittest: " + dna.getFittestChromosome().getFitness());
             dna = ga.evolve(dna);
         }
 
-        generationCount++;
         System.out.println("Generation: " + generationCount);
         if (dna.getFittestChromosome().getFitness()==dna.getFittestChromosome().getMaxFitness()) {
             System.out.println("Solution found!");
