@@ -54,7 +54,7 @@ public class Main {
         int chrom = !req.queryParams("chrom").equals("") ? Integer.parseInt(req.queryParams("chrom")) : 50;
 
         DNA dna = new DNA(initGraph, chrom, true);
-        GeneticAlgorithm ga = new GeneticAlgorithm(best, steady, "uniform");
+        GeneticAlgorithm ga = new GeneticAlgorithm(best, steady, "uniform", "roulette");
 
         int generationCount = 0;
         while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness() && generationCount < iteration) {
@@ -73,7 +73,7 @@ public class Main {
 
     public static void main(String[] args) {
         Spark.staticFileLocation("/public");
-        Graph initGraph = new Graph("Testcase.txt");
+        Graph initGraph = new Graph("input.txt");
         initGraph.randomInitialize();
 
         get("/", (req, res) -> {

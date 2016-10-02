@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class Graph {
     private Node[] variables;
+    private ArrayList<Node> lostVariables;
     private ArrayList<DomainLimit> scheduleDomainLimits;
     private ArrayList<DomainLimit> roomDomainLimits;
 
@@ -20,6 +21,7 @@ public class Graph {
         try {
             String currLine;
             br = new BufferedReader(new FileReader(filepath));
+            lostVariables = new ArrayList<>();
 
             //Read room domain limit
             roomDomainLimits = new ArrayList<>();
@@ -62,7 +64,11 @@ public class Graph {
                         }
                     }
                 }
-                nodes.add(new Node(scheduleDL.getName(), null, domains));
+                if (domains.size() != 0) {
+                    nodes.add(new Node(scheduleDL.getName(), null, domains));
+                } else {
+                    lostVariables.add(new Node(scheduleDL.getName(), null, domains));
+                }
             }
 
             //Create Graph
@@ -177,6 +183,10 @@ public class Graph {
 
     public Node[] getVariables() {
         return variables;
+    }
+
+    public ArrayList<Node> getLostVariables() {
+        return lostVariables;
     }
 
     public ArrayList<DomainLimit> getScheduleDomainLimits() {
