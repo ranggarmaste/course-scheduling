@@ -2,8 +2,6 @@ public class mainGA {
 	public static void main (String[] args) {
 
         DNA dna = new DNA(Integer.parseInt(args[3]), true, args[4]);
-        
-        int generationCount = 0;
 
         //args[0] true or false -> best chromosome di keep atau ngk, pake true aja biar ketemu solusi
         //args[1] true or false -> pake GA yang steady (true) ato generational(false)
@@ -20,7 +18,11 @@ public class mainGA {
         //args[4] string inputfile
         //args[5] Maks iterasi
         //args[6] mekanisme parent selection -> roulette, rank, sampling, tournament
-        //args[7] pake seleksi alam atau ngk
+        //args[7] seleksi alam, mana yang mau di kick. Ini kalo pake yg steady aja. -> random, worst, none
+        //args[8] mutation probability
+        //args[9] crossover probability
+        //args[10] tournament percentage
+
         boolean bool1, bool2;
         if (args[0].equals("true")) {
             bool1 = true;
@@ -32,21 +34,29 @@ public class mainGA {
         } else {
             bool2 = false;
         }
-        //Umumnya, run java mainGA true false
-        GeneticAlgorithm ga = new GeneticAlgorithm(bool1, bool2, args[2], args[6]);
+
+        GeneticAlgorithm ga;
+        ga = new GeneticAlgorithm(bool1, bool2, args[2], args[6], args[7]);    
+
+        if (args[8] != null && args[9] != null && args[10] != null) {
+            ga.setParameters(Integer.parseInt(args[8]), Integer.parseInt(args[9]), Integer.parseInt(args[10]));
+        } 
+        //Misal       
+        // java -classpath . mainGA true true uniform 500 Testcase-7.txt 10000 tournament worst 5 95 10
 
         System.out.println("Max fitness : " + dna.getFittestChromosome().getMaxFitness());
+        int generationCount = 1;
+        System.out.println("Generation: " + generationCount + " Fittest: " + dna.getFittestChromosome().getFitness());
 
         while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness() && generationCount<Integer.parseInt(args[5])) {
-            generationCount++;
-            System.out.println("Generation: " + generationCount + " Fittest: " + dna.getFittestChromosome().getFitness());
             dna = ga.evolve(dna);
+            System.out.println("Generation: " + generationCount + " Fittest: " + dna.getFittestChromosome().getFitness());
+            generationCount++;
         }
 
-        System.out.println("Generation: " + generationCount);
         if (dna.getFittestChromosome().getFitness()==dna.getFittestChromosome().getMaxFitness()) {
             System.out.println("Solution found!");
-        } else if (generationCount >= Integer.parseInt(args[5])) {
+        } else if (generationCount == Integer.parseInt(args[5])) {
             System.out.println("Max iteration reached");
             System.out.println("Fittest : " + dna.getFittestChromosome().getFitness());
         }

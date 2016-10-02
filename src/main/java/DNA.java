@@ -121,7 +121,33 @@ public class DNA {
 
 	public Chromosome getRandomChromosome(boolean keepBest) {
 		int ret = getRandomInteger(keepBest);
-
 		return chromosomeArray[ret];
 	}
+
+	public int[] getWorstNumbers() {
+		int min1 = 0;
+		int min2 = 1;
+
+		if (chromosomeArray[min2].getFitness() < chromosomeArray[min1].getFitness()) {
+			min1 = 1;
+			min2 = 0;
+		}
+
+		for (int i=2; i<chromosomeArray.length; i++) {
+			if (chromosomeArray[i].getFitness()<chromosomeArray[min1].getFitness()) {
+				min2 = min1;
+				min1 = i;
+			} else if (chromosomeArray[i].getFitness()<chromosomeArray[min2].getFitness()) {
+				min2 = i;
+			}
+		}
+
+		int ret[] = new int[2];
+		ret[0] = min1;
+		ret[1] = min2;
+		
+		return ret;
+	}
+
+	
 }
