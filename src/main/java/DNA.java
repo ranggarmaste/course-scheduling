@@ -16,7 +16,10 @@ public class DNA {
 			for (int i=0; i<jumlahKromosom; i++) {
 				Chromosome cr = new Chromosome(graph);
 				cr.getGraph().randomInitialize();
-				chromosomeArray[i] = cr;
+				//FUCK THIS BUG
+				//chromosomeArray[i] = cr;
+				chromosomeArray[i] = new Chromosome();
+				chromosomeArray[i].setGraph(cr.getGraph());
 			}
 		} else {
 			//Isi graph dengan testcase.txt, ini dummy aja
@@ -24,7 +27,8 @@ public class DNA {
 			for (int i=0; i<jumlahKromosom; i++) {
 				Chromosome cr = new Chromosome(dummy);
 				cr.getGraph().randomInitialize();
-				chromosomeArray[i] = cr;
+				chromosomeArray[i] = new Chromosome();
+				chromosomeArray[i].setGraph(cr.getGraph());
 			}
 		}
 	}
@@ -38,7 +42,8 @@ public class DNA {
 			for (int i=0; i<jumlahKromosom; i++) {
 				Chromosome cr = new Chromosome(graph);
 				cr.getGraph().randomInitialize();
-				chromosomeArray[i] = cr;
+				chromosomeArray[i] = new Chromosome();
+				chromosomeArray[i].setGraph(cr.getGraph());
 			}
 		} else {
 			//Isi graph dengan testcase.txt, ini dummy aja
@@ -46,7 +51,8 @@ public class DNA {
 			for (int i=0; i<jumlahKromosom; i++) {
 				Chromosome cr = new Chromosome(dummy);
 				cr.getGraph().randomInitialize();
-				chromosomeArray[i] = cr;
+				chromosomeArray[i] = new Chromosome();
+				chromosomeArray[i].setGraph(cr.getGraph());
 			}
 		}
 	}

@@ -43,9 +43,9 @@ public class mainGA {
 
         generationCount++;
         System.out.println("Generation: " + generationCount);
-        if (dna.getFittestChromosome().getFitness() == 28) {
+        if (dna.getFittestChromosome().getFitness()==dna.getFittestChromosome().getMaxFitness()) {
             System.out.println("Solution found!");
-        } else {
+        } else if (generationCount >= Integer.parseInt(args[5])) {
             System.out.println("Max iteration reached");
             System.out.println("Fittest : " + dna.getFittestChromosome().getFitness());
         }

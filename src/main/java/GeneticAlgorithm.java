@@ -135,7 +135,7 @@ public class GeneticAlgorithm {
 		return dna;
 	}
 
-	private static Chromosome uniformCrossover(DNA dna, Chromosome parent1, Chromosome parent2) {
+	public static Chromosome uniformCrossover(DNA dna, Chromosome parent1, Chromosome parent2) {
 		//dummy
 		Chromosome newChrome = dna.getChromosome(0);
 
@@ -152,11 +152,16 @@ public class GeneticAlgorithm {
 		return newChrome;
 	}
 
-	private static Chromosome[] uniformCrossoverArray(DNA dna, Chromosome parent1, Chromosome parent2) {
+	public static Chromosome[] uniformCrossoverArray(DNA dna, Chromosome parent1, Chromosome parent2) {
 		//Dummy
 		Chromosome[] newChrome = new Chromosome[2];
-		newChrome[0] = dna.getChromosome(0);;
-		newChrome[1] = dna.getChromosome(0);;
+		//newChrome[0] = dna.getChromosome(0);
+		//newChrome[1] = dna.getChromosome(0);
+		newChrome[0] = new Chromosome();
+		newChrome[1] = new Chromosome();
+
+		newChrome[0].setGraph(dna.getChromosome(0).getGraph());
+		newChrome[1].setGraph(dna.getChromosome(0).getGraph());
 
 		//Loop ke tiap variabel
 		for (int i=0; i<parent1.size(); i++) {
@@ -173,7 +178,7 @@ public class GeneticAlgorithm {
 		return newChrome;
 	}
 
-	private static Chromosome parentSelection(DNA dna) {
+	public static Chromosome parentSelection(DNA dna) {
 		//Bikin DNA kosong
 		DNA selection = new DNA(dna.getGraph(), forSelection, false);
 
