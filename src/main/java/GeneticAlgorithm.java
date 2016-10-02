@@ -42,13 +42,6 @@ public class GeneticAlgorithm {
 			//Simpen best chromosome dari populasi sebelumnya
 			newDNA.saveChromosome(0, dna.getFittestChromosome());
 			System.out.println("Saving best Chromosome");
-			//Tuker. Fittest chromosome jadi di paling depan
-			/*
-			int fittest = dna.getFittestChromosome();
-			if (fittest!=0) {
-				dna.switchChromosome(0, fittest);
-			}
-			*/
 		}
 
 		int mulaiIterasi;
