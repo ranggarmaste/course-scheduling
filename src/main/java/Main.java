@@ -91,7 +91,7 @@ public class Main {
 
     public static void main(String[] args) {
         Spark.staticFileLocation("/public");
-        Graph initGraph = new Graph("input.txt");
+        Graph initGraph = new Graph("tc/Testcase-7.txt");
         initGraph.randomInitialize();
 
         get("/", (req, res) -> {
