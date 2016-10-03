@@ -29,12 +29,23 @@ public class Main {
         return new ModelAndView(model, "index.vm");
     }
 
-    public static ModelAndView prepareHC(Graph initGraph) {
+    public static ModelAndView prepareHC(Request req, Graph initGraph) {
+        int max = !req.queryParams("max").equals("") ? Integer.parseInt(req.queryParams("max")) : 10;
         HillClimbing hc = new HillClimbing(initGraph);
-        hc.run();
         Graph hcGraph = hc.getGraph();
-
-        return prepareMV(initGraph, hcGraph, hc.getIteration(), "Hill Climbing");
+        int totalIterations = 0;
+        while (max >= 0) {
+            initGraph.randomInitialize();
+            hc = new HillClimbing(initGraph);
+            hc.run();
+            hcGraph = hc.getGraph();
+            totalIterations += hc.getIteration();
+            if (hcGraph.getConflicts() == 0) {
+                break;
+            }
+            max--;
+        }
+        return prepareMV(initGraph, hcGraph, totalIterations, "Hill Climbing");
     }
 
     public static ModelAndView prepareSA(Request req, Graph initGraph) {
@@ -52,9 +63,16 @@ public class Main {
         boolean steady = req.queryParams("steady").equals("") || (req.queryParams("steady").equals("T"));
         int iteration = !req.queryParams("iteration").equals("") ? Integer.parseInt(req.queryParams("iteration")) : 10;
         int chrom = !req.queryParams("chrom").equals("") ? Integer.parseInt(req.queryParams("chrom")) : 50;
+        String crossmech = !req.queryParams("crossmech").equals("") ?  req.queryParams("crossmech") : "uniform";
+        String parsel = !req.queryParams("parsel").equals("") ? req.queryParams("parsel") : "roulette";
+        String natsel = !req.queryParams("natsel").equals("") ? req.queryParams("natsel") : "worst";
+        int mutprob = !req.queryParams("mutprob").equals("") ? Integer.parseInt(req.queryParams("mutprob")) : 5;
+        int crossprob = !req.queryParams("crossprob").equals("") ? Integer.parseInt(req.queryParams("crossprob")) : 95;
+        int tourper = !req.queryParams("tourper").equals("") ? Integer.parseInt(req.queryParams("tourper")) : 10;
 
         DNA dna = new DNA(initGraph, chrom, true);
-        GeneticAlgorithm ga = new GeneticAlgorithm(best, steady, "uniform", "roulette");
+        GeneticAlgorithm ga = new GeneticAlgorithm(best, steady, crossmech, parsel);
+        ga.setParameters(mutprob, crossprob, tourper);
 
         int generationCount = 0;
         while (dna.getFittestChromosome().getFitness() < dna.getFittestChromosome().getMaxFitness() && generationCount < iteration) {
@@ -81,7 +99,7 @@ public class Main {
         }, new VelocityTemplateEngine());
 
         get("/HC", (req, res) -> {
-            return prepareHC(initGraph);
+            return prepareHC(req, initGraph);
         }, new VelocityTemplateEngine());
 
         get("/SA", (req, res) -> {

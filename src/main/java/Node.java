@@ -8,17 +8,20 @@ import java.util.ArrayList;
 public class Node {
     private String courseName;
     private Domain currDomain;
+    private ArrayList<RoomDomain> roomDomains;
     private ArrayList<Domain> domainList;
 
-    public Node(String courseName, Domain currDomain, ArrayList<Domain> domainList) {
+    public Node(String courseName, Domain currDomain, ArrayList<RoomDomain> roomDomains, ArrayList<Domain> domainList) {
         this.courseName = courseName;
         this.currDomain = currDomain;
+        this.roomDomains = roomDomains;
         this.domainList = domainList;
     }
 
     public Node(Node n) {
         courseName = n.courseName;
         currDomain = new Domain(n.currDomain);
+        roomDomains = n.roomDomains;
         domainList = new ArrayList<>();
         for (Domain d : n.domainList) {
             domainList.add(new Domain(d));
@@ -87,12 +90,6 @@ public class Node {
         } else {
             System.out.println("Not set yet.");
         }
-        /*
-        System.out.println("**List Of Domains**");
-        for (Domain domain : domainList) {
-            domain.print();
-        }
-        */
     }
 
     public void printCurrDomain() {

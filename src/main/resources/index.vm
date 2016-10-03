@@ -17,7 +17,14 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li id="hc-nav"><a  href="/HC">Hill Climbing</a></li>
+                        <li id="hc-nav" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hill Climbing<span class="caret"></span></a>
+                            <form class="dropdown-menu dropdown-form" method="get" action="/HC">
+                                <li>Max Random Restart</li>
+                                <li><input type="text" name="max" placeholder="10"></li>
+                                <li><input class="btn btn-primary" type="submit" value="Calculate"></li>
+                            </form>
+                        </li>
                         <li id="sa-nav" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Simulated Annealing<span class="caret"></span></a>
                             <form class="dropdown-menu dropdown-form" method="get" action="/SA">
@@ -35,10 +42,50 @@
                                 <li><input type="text" name="chrom" placeholder="50"></li>
                                 <li>Max Iteration</li>
                                 <li><input type="text" name="iteration" placeholder="10"></li>
-                                <li>Best (T/F)</li>
-                                <li><input type="text" name="best" placeholder="T"></li>
-                                <li>Steady (T/F)</li>
-                                <li><input type="text" name="steady" placeholder="F"></li>
+                                <li>Mutation Probability</li>
+                                <li><input type="text" name="mutprob" placeholder="5"></li>
+                                <li>Crossover Probability</li>
+                                <li><input type="text" name="crossprob" placeholder="95"></li>
+                                <li>Best</li>
+                                <li>
+                                    <select class="form-control" name="best">
+                                        <option selected value="T">T</option>
+                                        <option value="F">F</option>
+                                    </select>
+                                </li>
+                                <li>Steady</li>
+                                <li>
+                                    <select id="steady" class="form-control" name="steady" onchange="showNat()">
+                                        <option value="T">T</option>
+                                        <option selected value="F">F</option>
+                                    </select>
+                                </li>
+                                <li class="hide-form" id="nat-label">Natural Selection</li>
+                                <li class="hide-form" id="nat-input">
+                                    <select class="form-control" name="natsel">
+                                        <option selected value="worst">Worst</option>
+                                        <option value="random">Random</option>
+                                    </select>
+                                </li>
+                                <li>Crossover Mechanism</li>
+                                <li>
+                                    <select class="form-control" name="crossmech">
+                                        <option selected value="uniform">Uniform</option>
+                                        <option value="one-point">1-Point</option>
+                                        <option value="two-point">2-Point</option>
+                                    </select>
+                                </li>
+                                <li>Parent Selection</li>
+                                <li>
+                                    <select id="parsel" class="form-control" name="parsel" onchange="showTour()">
+                                        <option value="roulette">Roulette</option>
+                                        <option value="sampling">Sampling</option>
+                                        <option selected value="tournament">Tournament</option>
+                                        <option value="rank">Rank</option>
+                                    </select>
+                                </li>
+                                <li id="tour-label">Tournament Percentage</li>
+                                <li id="tour-input"><input type="text" name="tourper" placeholder="10"></li>
                                 <li><input class="btn btn-primary" type="submit" value="Calculate"></li>
                             </form>
                         </li>
@@ -160,6 +207,7 @@
         <script>
             var graph = $data;
             var algorithm = "$algorithm";
+            console.log(graph);
         </script>
         <script src="/index.js"></script>
     </body>

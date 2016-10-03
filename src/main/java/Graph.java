@@ -45,8 +45,10 @@ public class Graph {
             ArrayList<Node> nodes = new ArrayList<>();
             for (DomainLimit scheduleDL : scheduleDomainLimits) {
                 ArrayList<Domain> domains = new ArrayList<>();
+                ArrayList<RoomDomain> roomDomains = new ArrayList<>();
                 for (DomainLimit roomDL : roomDomainLimits) {
                     if (scheduleDL.getRoom().equals("-") || scheduleDL.getRoom().equals(roomDL.getRoom())) {
+                        RoomDomain roomDomain = new RoomDomain(roomDL.getRoom());
                         int startTime = scheduleDL.getStartTime() > roomDL.getStartTime() ?
                                 scheduleDL.getStartTime() : roomDL.getStartTime();
                         int finishTime = scheduleDL.getFinishTime() < roomDL.getFinishTime() ?
@@ -58,16 +60,19 @@ public class Graph {
                         for (int d : scheduleDL.getDays()) {
                             if (roomDL.getDays().contains(d)) {
                                 for (int st = startTime; st <= startTimeLimit; st++) {
-                                    domains.add(new Domain(d, st, scheduleDL.getDuration(), roomDL.getRoom()));
+                                    Domain domain = new Domain(d, st, scheduleDL.getDuration(), roomDL.getRoom());
+                                    domains.add(domain);
+                                    roomDomain.addDomain(domain);
                                 }
                             }
                         }
+                        roomDomains.add(roomDomain);
                     }
                 }
                 if (domains.size() != 0) {
-                    nodes.add(new Node(scheduleDL.getName(), null, domains));
+                    nodes.add(new Node(scheduleDL.getName(), null, roomDomains, domains));
                 } else {
-                    lostVariables.add(new Node(scheduleDL.getName(), null, domains));
+                    lostVariables.add(new Node(scheduleDL.getName(), null, roomDomains, domains));
                 }
             }
 
@@ -87,6 +92,9 @@ public class Graph {
     }
 
     public Graph(Graph graph) {
+        scheduleDomainLimits = graph.scheduleDomainLimits;
+        roomDomainLimits = graph.roomDomainLimits;
+        lostVariables = graph.lostVariables;
         variables = new Node[graph.variables.length];
         for (int i = 0; i < graph.variables.length; i++) {
             variables[i] = new Node(graph.variables[i]);

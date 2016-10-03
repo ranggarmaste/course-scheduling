@@ -13,6 +13,28 @@ if (algorithm == "Hill Climbing") {
     $("#ga-nav").addClass("active");
 }
 
+function showTour() {
+    var val = $('#parsel').val();
+    if (val != 'tournament') {
+        $('#tour-label').addClass('hide-form');
+        $('#tour-input').addClass('hide-form');
+    } else {
+        $('#tour-label').removeClass('hide-form');
+        $('#tour-input').removeClass('hide-form');
+    }
+}
+
+function showNat() {
+    var val = $('#steady').val();
+    if (val == 'F') {
+        $('#nat-label').addClass('hide-form');
+        $('#nat-input').addClass('hide-form');
+    } else {
+        $('#nat-label').removeClass('hide-form');
+        $('#nat-input').removeClass('hide-form');
+    }
+}
+
 //Assign slot
 $(document).ready(function () {
     //variables

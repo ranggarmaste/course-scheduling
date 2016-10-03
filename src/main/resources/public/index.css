@@ -114,3 +114,7 @@ th, td {
     color: white;
     text-align: center;
 }
+
+.hide-form {
+    display: none;
+}
