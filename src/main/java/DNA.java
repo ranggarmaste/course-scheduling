@@ -49,7 +49,7 @@ public class DNA {
 		//INI PENTING, jgn diilangin, kalo ngk NGEBUG
 		else {
 			//Isi graph dengan testcase.txt, ini dummy aja
-			Graph dummy = new Graph("Testcase.txt");
+			Graph dummy = new Graph("tc/Testcase.txt");
 			for (int i=0; i<jumlahKromosom; i++) {
 				Chromosome cr = new Chromosome(dummy);
 				cr.getGraph().randomInitialize();
