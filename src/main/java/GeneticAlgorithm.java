@@ -45,10 +45,10 @@ public class GeneticAlgorithm {
 
 	public static DNA evolve(DNA dna) {
 		if (isSteadyState) {
-			System.out.println("Evolving incrementally");
+			//System.out.println("Evolving incrementally");
 			return evolveIncremental(dna);
 		} else {
-			System.out.println("Evolving generationally");
+			//System.out.println("Evolving generationally");
 			return evolveGenerational(dna);
 		}
 	}
@@ -60,7 +60,7 @@ public class GeneticAlgorithm {
 		if(keepBestChromosome) {
 			//Simpen best chromosome dari populasi sebelumnya
 			newDNA.saveChromosome(0, dna.getFittestChromosome());
-			System.out.println("Saving best Chromosome");
+			//System.out.println("Saving best Chromosome");
 		}
 
 		int mulaiIterasi;
@@ -73,28 +73,35 @@ public class GeneticAlgorithm {
 		}
 
 		//crossover
-		if (crossType.equals("uniform")) {
-			for (int i=mulaiIterasi; i<dna.size(); i++) {
-				if (Math.random()<=crossProb) {
-					//Chromosome parent1 = parentSelection(dna);
-					//Chromosome parent2 = parentSelection(dna);
-					Chromosome parent1 = new Chromosome();
-					Chromosome parent2 = new Chromosome();
+		for (int i=mulaiIterasi; i<dna.size(); i++) {
+			if (Math.random()<=crossProb) {
+				//Chromosome parent1 = parentSelection(dna);
+				//Chromosome parent2 = parentSelection(dna);
+				Chromosome parent1 = new Chromosome();
+				Chromosome parent2 = new Chromosome();
 
-					if (parentType.equals("sampling")) {
+				//GATAU KENAPA TESTCASE TUJUH PARENT2nya BISA KEPILIH SIZE 8, KAN HARUSNYA 20 SEMUA
+				//INI HANDLERNYA
+				if (parentType.equals("sampling")) {
+					do {
 						Chromosome[] parents = samplingParentSelection(dna);
 						parent1.setGraph(parents[0].getGraph());
 						parent2.setGraph(parents[1].getGraph());
-					} else {
+					} while (parent1.size()!=parent2.size());
+				} else {
+					do {
 						parent1.setGraph(parentSelection(dna).getGraph());
 						parent2.setGraph(parentSelection(dna).getGraph());
-					}
-
-					Chromosome newChrome = new Chromosome();
-					newChrome.setGraph(uniformCrossover(dna, parent1, parent2).getGraph());
-					//Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
-					newDNA.saveChromosome(i, newChrome);
+					} while (parent1.size()!=parent2.size());
 				}
+
+				//System.out.println("Parent1 : " + parent1.size());
+				//System.out.println("Parent2 : " + parent2.size());
+
+				Chromosome newChrome = new Chromosome();
+				newChrome.setGraph(crossover(dna, parent1, parent2).getGraph());
+				//Chromosome newChrome = uniformCrossover(dna, parent1, parent2);
+				newDNA.saveChromosome(i, newChrome);
 			}
 		}
 		
@@ -112,10 +119,10 @@ public class GeneticAlgorithm {
 		if(keepBestChromosome) {
 			//Tuker. Fittest chromosome jadi di paling depan
 			int fittest = dna.getFittestNumber();
-			System.out.println("Fittest : " + fittest);
+			//System.out.println("Fittest : " + fittest);
 			if (fittest!=0) {
 				dna.switchChromosome(0, fittest);
-				System.out.println("Saving best Chromosome");
+				//System.out.println("Saving best Chromosome");
 			}
 		}
 
@@ -130,55 +137,59 @@ public class GeneticAlgorithm {
 
 		//crossover
 		if (Math.random()<=crossProb) {
-			if (crossType.equals("uniform")) {
-				Chromosome parent1 = new Chromosome();
-				Chromosome parent2 = new Chromosome();
+			Chromosome parent1 = new Chromosome();
+			Chromosome parent2 = new Chromosome();
 
-				if (parentType.equals("sampling")) {
+			//GATAU KENAPA TESTCASE TUJUH PARENT2nya BISA KEPILIH SIZE 8, KAN HARUSNYA 20 SEMUA
+			//INI HANDLERNYA
+			if (parentType.equals("sampling")) {
+				do {
 					Chromosome[] parents = samplingParentSelection(dna);
 					parent1.setGraph(parents[0].getGraph());
 					parent2.setGraph(parents[1].getGraph());
-				} else {
+				} while (parent1.size()!=parent2.size());
+			} else {
+				do {
 					parent1.setGraph(parentSelection(dna).getGraph());
 					parent2.setGraph(parentSelection(dna).getGraph());
+				} while (parent1.size()!=parent2.size());
+			}
+
+			Chromosome[] child = crossoverArray(dna, parent1, parent2);
+
+			if (kickType.equals("random")) {
+				int random1 = dna.getRandomInteger(keepBestChromosome);
+				int random2;
+				do {
+					random2 = dna.getRandomInteger(keepBestChromosome);
+				} while (random1==random2);
+
+				/*
+				if ((random1 == 0 || random2==0) && (keepBestChromosome)) {
+					System.exit(1);
 				}
+				*/
 
-				Chromosome[] child = uniformCrossoverArray(dna, parent1, parent2);
+				dna.saveChromosome(random1, child[0]);
+				dna.saveChromosome(random2, child[1]);
 
-				if (kickType.equals("random")) {
-					int random1 = dna.getRandomInteger(keepBestChromosome);
-					int random2;
-					do {
-						random2 = dna.getRandomInteger(keepBestChromosome);
-					} while (random1==random2);
+			} else
+			if (kickType.equals("worst")) {
+				int worst[] = dna.getWorstNumbers();
 
-					/*
-					if ((random1 == 0 || random2==0) && (keepBestChromosome)) {
-						System.exit(1);
-					}
-					*/
+				int worst1 = worst[0];
+				int worst2 = worst[1];
 
-					dna.saveChromosome(random1, child[0]);
-					dna.saveChromosome(random2, child[1]);
+				dna.saveChromosome(worst1, child[0]);
+				dna.saveChromosome(worst2, child[1]);
+			} else {
+				int worst[] = dna.getWorstNumbers();
 
-				} else
-				if (kickType.equals("worst")) {
-					int worst[] = dna.getWorstNumbers();
+				int worst1 = worst[0];
+				int worst2 = worst[1];
 
-					int worst1 = worst[0];
-					int worst2 = worst[1];
-
-					dna.saveChromosome(worst1, child[0]);
-					dna.saveChromosome(worst2, child[1]);
-				} else {
-					int worst[] = dna.getWorstNumbers();
-
-					int worst1 = worst[0];
-					int worst2 = worst[1];
-
-					dna.saveChromosome(worst1, child[0]);
-					dna.saveChromosome(worst2, child[1]);
-				}
+				dna.saveChromosome(worst1, child[0]);
+				dna.saveChromosome(worst2, child[1]);
 			}
 		}
 
@@ -193,24 +204,73 @@ public class GeneticAlgorithm {
 		return dna;
 	}
 
-	public static Chromosome uniformCrossover(DNA dna, Chromosome parent1, Chromosome parent2) {
+	public static Chromosome crossover(DNA dna, Chromosome parent1, Chromosome parent2) {
 		//dummy
-		Chromosome newChrome = dna.getChromosome(0);
+		Chromosome newChrome = new Chromosome();
+		newChrome.setGraph(dna.getChromosome(0).getGraph());
 
-		//Loop ke tiap variabel
-		for (int i=0; i<parent1.size(); i++) {
-			double rand = Math.random();
-			if (rand<=forCrossover) {
-				newChrome.setGene(i, parent1.getGene(i));
-			} else {
-				newChrome.setGene(i, parent2.getGene(i));
+		if (crossType.equals("uniform")) {
+			//Loop ke tiap variabel
+			for (int i=0; i<parent1.size(); i++) {
+				double rand = Math.random();
+				if (rand<=forCrossover) {
+					newChrome.setGene(i, parent1.getGene(i));
+				} else {
+					newChrome.setGene(i, parent2.getGene(i));
+				}
+			}
+		} else 
+		if (crossType.equals("one-point")) {
+			//Tentukan point
+			Random rand = new Random();
+			int point = rand.nextInt(parent1.size());
+
+			for (int i=0; i<parent1.size(); i++) {
+				if (i<=point) {
+					newChrome.setGene(i, parent1.getGene(i));
+				} else {
+					newChrome.setGene(i, parent2.getGene(i));
+				}
+			}
+		} else
+		if (crossType.equals("two-point")) {
+			//Tentukan point1
+			Random rand = new Random();
+			int point1 = rand.nextInt(parent1.size());
+
+			//Tentukan point2
+			int point2;
+			do {
+				point2 = rand.nextInt(parent1.size());
+			} while (point1==point2);
+
+			for (int i=0; i<parent1.size(); i++) {
+				if (i<=point1) {
+					newChrome.setGene(i, parent1.getGene(i));
+				} else 
+				if (i>point1 && i<point2) {
+					newChrome.setGene(i, parent2.getGene(i));
+				} else {
+					newChrome.setGene(i, parent1.getGene(i));
+				}
+			}
+		}
+		else {
+			//Loop ke tiap variabel
+			for (int i=0; i<parent1.size(); i++) {
+				double rand = Math.random();
+				if (rand<=forCrossover) {
+					newChrome.setGene(i, parent1.getGene(i));
+				} else {
+					newChrome.setGene(i, parent2.getGene(i));
+				}
 			}
 		}
 
 		return newChrome;
 	}
 
-	public static Chromosome[] uniformCrossoverArray(DNA dna, Chromosome parent1, Chromosome parent2) {
+	public static Chromosome[] crossoverArray(DNA dna, Chromosome parent1, Chromosome parent2) {
 		//Dummy
 		Chromosome[] newChrome = new Chromosome[2];
 		//newChrome[0] = dna.getChromosome(0);
@@ -221,15 +281,69 @@ public class GeneticAlgorithm {
 		newChrome[0].setGraph(dna.getChromosome(0).getGraph());
 		newChrome[1].setGraph(dna.getChromosome(0).getGraph());
 
-		//Loop ke tiap variabel
-		for (int i=0; i<parent1.size(); i++) {
-			double rand = Math.random();
-			if (rand<=forCrossover) {
-				newChrome[0].setGene(i, parent1.getGene(i));
-				newChrome[1].setGene(i, parent2.getGene(i));
-			} else {
-				newChrome[0].setGene(i, parent2.getGene(i));
-				newChrome[1].setGene(i, parent1.getGene(i));
+		if (crossType.equals("uniform")) {
+			//Loop ke tiap variabel
+			for (int i=0; i<parent1.size(); i++) {
+				double rand = Math.random();
+				if (rand<=forCrossover) {
+					newChrome[0].setGene(i, parent1.getGene(i));
+					newChrome[1].setGene(i, parent2.getGene(i));
+				} else {
+					newChrome[0].setGene(i, parent2.getGene(i));
+					newChrome[1].setGene(i, parent1.getGene(i));
+				}
+			}
+		} else 
+		if (crossType.equals("one-point")) {
+			//Tentukan point
+			Random rand = new Random();
+			int point = rand.nextInt(parent1.size());
+
+			for (int i=0; i<parent1.size(); i++) {
+				if (i<=point) {
+					newChrome[0].setGene(i, parent1.getGene(i));
+					newChrome[1].setGene(i, parent2.getGene(i));
+				} else {
+					newChrome[0].setGene(i, parent2.getGene(i));
+					newChrome[1].setGene(i, parent1.getGene(i));
+				}
+			}
+		} else 
+		if (crossType.equals("two-point")) {
+			//Tentukan point1
+			Random rand = new Random();
+			int point1 = rand.nextInt(parent1.size());
+
+			//Tentukan point2
+			int point2;
+			do {
+				point2 = rand.nextInt(parent1.size());
+			} while (point1==point2);
+
+			for (int i=0; i<parent1.size(); i++) {
+				if (i<=point1) {
+					newChrome[0].setGene(i, parent1.getGene(i));
+					newChrome[1].setGene(i, parent2.getGene(i));
+				} else 
+				if (i>point1 && i<point2) {
+					newChrome[0].setGene(i, parent2.getGene(i));
+					newChrome[1].setGene(i, parent1.getGene(i));
+				} else {
+					newChrome[0].setGene(i, parent1.getGene(i));
+					newChrome[1].setGene(i, parent2.getGene(i));
+				}
+			}
+		} else {
+			//Loop ke tiap variabel
+			for (int i=0; i<parent1.size(); i++) {
+				double rand = Math.random();
+				if (rand<=forCrossover) {
+					newChrome[0].setGene(i, parent1.getGene(i));
+					newChrome[1].setGene(i, parent2.getGene(i));
+				} else {
+					newChrome[0].setGene(i, parent2.getGene(i));
+					newChrome[1].setGene(i, parent1.getGene(i));
+				}
 			}
 		}
 
@@ -238,7 +352,7 @@ public class GeneticAlgorithm {
 
 	public static Chromosome parentSelection(DNA dna) {
 		if (parentType.equals("tournament")) {
-			System.out.println("TOURNAMENT");
+			//System.out.println("TOURNAMENT");
 			//Bikin DNA kosong
 			int forSelection = (int) (selectionPercentage*dna.size());
 			DNA selection = new DNA(dna.getGraph(), forSelection, false);
@@ -254,7 +368,7 @@ public class GeneticAlgorithm {
 			return fittest;
 		} else
 		if (parentType.equals("roulette")) {
-			System.out.println("ROULETTE");
+			//System.out.println("ROULETTE");
 			//Jumlahkan total fitness
 			int totalFitness = 0;
 			for (int i=0; i<dna.size(); i++) {
@@ -282,7 +396,7 @@ public class GeneticAlgorithm {
 	}
 
 	public static Chromosome[] samplingParentSelection(DNA dna) {
-		System.out.println("SAMPLING");
+		//System.out.println("SAMPLING");
 		Chromosome[] selection = new Chromosome[2];
 		for (int i=0; i<2; i++) {
 			selection[i] = new Chromosome();
