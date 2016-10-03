@@ -124,6 +124,14 @@ public class Graph {
         }
     }
 
+    public int getRoomSlots() {
+        int count = 0;
+        for (DomainLimit dl : roomDomainLimits) {
+            count += (dl.getFinishTime() - dl.getStartTime()) * dl.getDays().size();
+        }
+        return count;
+    }
+
     public int getConflicts() {
         int count = 0;
         for (int i = 0; i < variables.length - 1; i++) {
@@ -148,12 +156,20 @@ public class Graph {
         return count;
     }
 
+//    public double getEffectivityTS() {
+//        double count = 0.0;
+//        for (int i = 0; i < variables.length; i++) {
+//            count += variables[i].getCurrDomain().getDuration();
+//        }
+//        return (count - getConflicts()) / getRoomSlots() * 100;
+//    }
+
     public double getEffectivityTS() {
         double count = 0.0;
         for (int i = 0; i < variables.length; i++) {
             count += variables[i].getCurrDomain().getDuration();
         }
-        return 100 - (getConflictsTS() / count * 100);
+        return 100 - ((getConflicts() / count) * 100);
     }
 
     //Strategi masih bisa diubah
