@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Arrays;
 
 public class GeneticAlgorithm {
 	//Peluang ganti nilai variabel
@@ -389,9 +390,53 @@ public class GeneticAlgorithm {
 			return dna.getChromosome(0);
 		} else 
 		if (parentType.equals("rank")) {
+			//Total fitness : 1+2+3+...+n
+			int n = dna.size();
+			int totalFitness = ((n+1) * n)/2;
+
+			Random bilBul = new Random();
+			//Generate random integer dari 1 sampe totalFitness
+			int rand = bilBul.nextInt(totalFitness);
+			rand+=1;
+
+			//Array untuk menentukan ranking
+			int[] rank = new int[dna.size()];
+
+			//Isi array dengan fitness function
+			for (int i=0; i<dna.size(); i++) {
+				rank[i] = dna.getChromosome(i).getFitness();
+			}
+
+			//Sort rank sehingga idx mencerminkan rank untuk
+			//fitness function 
+			Arrays.sort(rank);
+
+			int partSum = 0;
+			for (int i=0; i<dna.size(); i++) {
+				//Cari index rank dimana mengandung fitness function yg sesuai
+				int idx = findArrayIndex(rank, dna.getChromosome(i).getFitness());
+				partSum+=idx;
+				if (partSum>=rand) {
+					return dna.getChromosome(i);
+				}
+			}
+
 			return dna.getChromosome(0);
 		} else {
-			return dna.getChromosome(0);
+			//System.out.println("TOURNAMENT");
+			//Bikin DNA kosong
+			int forSelection = (int) (selectionPercentage*dna.size());
+			DNA selection = new DNA(dna.getGraph(), forSelection, false);
+
+			//Buat tiap kromosom, pilih acak
+			for (int i=0; i<selection.size(); i++) {
+				int rand = (int) (Math.random() * dna.size());
+		        selection.saveChromosome(i, dna.getChromosome(rand));
+			}
+
+			//Pilih yang paling bagus
+			Chromosome fittest = selection.getFittestChromosome();
+			return fittest;
 		}
 	}
 
@@ -438,5 +483,14 @@ public class GeneticAlgorithm {
 		}			
 
 		return selection;
+	}
+
+	public static int findArrayIndex(int[] arr, int value) {
+		for (int i=0; i<arr.length; i++) {
+			if (arr[i]==value) {
+				return i;
+			}
+		}
+		return 0;
 	}
 }

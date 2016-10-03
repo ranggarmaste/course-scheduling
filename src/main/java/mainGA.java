@@ -17,7 +17,7 @@ public class mainGA {
         //args[3] jumlah kromosom
         //args[4] string inputfile
         //args[5] Maks iterasi
-        //args[6] mekanisme parent selection -> roulette, sampling, tournament, rank belom
+        //args[6] mekanisme parent selection -> roulette, sampling, tournament, rank 
         //args[7] seleksi alam, mana yang mau di kick. Ini kalo pake yg steady aja. -> random, worst
         //args[8] mutation probability biasanya 5%
         //args[9] crossover probability biasanya 95%
